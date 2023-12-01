@@ -9,6 +9,8 @@ import {
 import "./shop.css";
 import BuyProduct from "./BuyProduct";
 import BuyForMySelf from "./BuyForMySelf";
+import { useNavigate } from "react-router-dom";
+
 export default function ProductCard(props, addtocart) {
   const [isOpen, setIsOpen] = useState(false);
   const [isBuyForMySelf, setIsBuyForMySelf] = useState(false);
@@ -16,11 +18,14 @@ export default function ProductCard(props, addtocart) {
   const [showDetail, setShowDetail] = useState(false);
   const [detail, setDetail] = useState([]);
   const [buy, setBuy] = useState();
+  const navigate = useNavigate();
+
   const handleOpen = (product) => {
-    const buyProduct = [{ product }];
-    const buyNow = buyProduct[0]["product"];
-    setBuy(buyNow);
-    setIsOpen(!isOpen);
+    // const buyProduct = [{ product }];
+    // const buyNow = buyProduct[0]["product"];
+    // setBuy(buyNow);
+    // setIsOpen(!isOpen);
+    navigate("/buy", { state: product });
   };
 
   //   console.log(props.i);
@@ -83,7 +88,9 @@ export default function ProductCard(props, addtocart) {
           <p>{props.i?.price} KWD</p>
           <div>
             <button onClick={() => handleOpen(props.i)}>Buy</button>
-            <button onClick={() => setIsBuyForMySelf(true)}>Buy For Me</button>
+            <button onClick={() => navigate("/buyForMe", { state: props.i })}>
+              Buy For Me
+            </button>
           </div>
         </div>
       </div>

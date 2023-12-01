@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function BuyProductQR() {
   const navigate = useNavigate();
@@ -34,6 +35,8 @@ export default function BuyProductQR() {
   const [isAddCard, setIsAddCard] = useState(false);
   const creditCardType = ["Visa", "Master Card"];
   const [tailors, setTailor] = useState([]);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [isBuyCard, setIsBuyCard] = useState(false);
 
   const checkLogin = async () => {
     localStorage.removeItem("QrId");
@@ -193,345 +196,343 @@ export default function BuyProductQR() {
     },
   });
   return (
-    <Box>
-      <form
-        onSubmit={formik.handleSubmit}
-        style={{ marginInline: "20%", marginTop: "5%", marginBottom: "5%" }}
+    <Box sx={{ mx: "50px", my: "30px" }}>
+      <div
+        style={{
+          fontSize: "25px",
+          fontWeight: "bold",
+          textAlign: "center",
+        }}
       >
-        <TextField
-          autoFocus
-          margin="dense"
-          id="quantity"
-          label="Quantity"
-          type="text"
-          fullWidth
-          variant="standard"
-          name="quantity"
-          value={formik.values.quantity}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.quantity && formik.errors.quantity}
-          helperText={formik.touched.quantity && formik.errors.quantity}
-        />
+        Buy Product Now
+      </div>
 
-        <TextField
-          sx={{ mt: "30px" }}
-          id="text"
-          label="name"
-          multiline
-          type="text"
-          fullWidth
-          variant="standard"
-          name="name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name && formik.errors.name}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-        <TextField
-          sx={{ mt: "30px" }}
-          id="text"
-          label="Description"
-          multiline
-          type="text"
-          fullWidth
-          variant="standard"
-          name="description"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.description && formik.errors.description}
-          helperText={formik.touched.description && formik.errors.description}
-        />
-        <FormControl>
-          <FormLabel
-            id="demo-row-radio-buttons-group-label"
-            sx={{ padding: "30px" }}
-          >
-            Tailoring
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            value={formik.values.tailoring}
-            onChange={formik.handleChange}
-          >
-            <FormControlLabel
-              name="tailoring"
-              control={<Radio />}
-              label="Yes "
-              value="yes"
-              onChange={() => setTailorDetails(true)}
-            />
-            <FormControlLabel
-              value="no"
-              control={<Radio />}
-              label="No"
-              name="tailoring"
-              onChange={() => setTailorDetails(false)}
-            />
-            {tailoringDetails && (
-              <div style={{ width: "100%" }}>
-                <FormControl sx={{ mt: "15px" }} style={{ width: "85%" }}>
-                  <InputLabel>Tailor Name</InputLabel>
-                  <Select
-                    name="tailorId"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.tailorId}
-                    input={<OutlinedInput label="Tailor Name" />}
-                  >
-                    {tailors.map((item) => (
-                      <MenuItem key={item._id} value={item._id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {formik.errors.tailorId && formik.touched.tailorId && (
-                    <FormHelperText sx={{ color: "red" }} id="tailorId">
-                      {formik.errors.tailorId}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <TextField
-                  sx={{ mt: "30px" }}
-                  id="text"
-                  label="Tailoring Description"
-                  multiline
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  name="tailoringDescription"
-                  value={formik.values.tailoringDescription}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.tailoringDescription &&
-                    formik.errors.tailoringDescription
-                  }
-                  helperText={
-                    formik.touched.tailoringDescription &&
-                    formik.errors.tailoringDescription
-                  }
-                />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="price"
-                  label="Price"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  name="price"
-                  value={formik.values.price}
-                  onChange={formik.handleChange}
-                  error={formik.touched.price && formik.errors.price}
-                  helperText={formik.touched.price && formik.errors.price}
-                />
-              </div>
-            )}
-          </RadioGroup>
-
-          {formik.errors.tailoring && formik.touched.tailoring && (
-            <FormHelperText sx={{ color: "red" }} id="tailoring">
-              {formik.errors.tailoring}
-            </FormHelperText>
-          )}
-        </FormControl>
-        <TextField
-          sx={{ mt: "30px" }}
-          id="text"
-          label="Phone"
-          multiline
-          type="text"
-          fullWidth
-          variant="standard"
-          name="phone"
-          value={formik.values.phone}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.phone && formik.errors.phone}
-          helperText={formik.touched.phone && formik.errors.phone}
-        />
-        {isClient && (
-          <Box>
+      <form onSubmit={formik.handleSubmit}>
+        <Box
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+          sx={{
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            mt: "30px",
+          }}
+        >
+          <Box sx={{ gridColumn: "span 2" }}>
             <TextField
-              sx={{ mt: "30px" }}
-              id="text"
-              label="Name"
-              multiline
+              id="quantity"
+              label="Quantity"
               type="text"
               fullWidth
-              variant="standard"
-              name="phoneName"
-              value={formik.values.phoneName}
+              variant="filled"
+              name="quantity"
+              value={formik.values.quantity}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.phoneName && formik.errors.phoneName}
-              helperText={formik.touched.phoneName && formik.errors.phoneName}
+              error={formik.touched.quantity && formik.errors.quantity}
+              helperText={formik.touched.quantity && formik.errors.quantity}
             />
+          </Box>
 
-            <FormControl>
-              <FormLabel
-                id="demo-row-radio-buttons-group-label"
-                sx={{ padding: "30px" }}
-              >
-                Gender
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={formik.values.gender}
-                onChange={formik.handleChange}
-              >
-                <FormControlLabel
-                  name="gender"
-                  control={<Radio />}
-                  label="Male "
-                  value="male"
-                />
-                <FormControlLabel
-                  value="female"
-                  control={<Radio />}
-                  label="Female"
-                  name="gender"
-                />
-              </RadioGroup>
-            </FormControl>
-            {formik.errors.gender && formik.touched.gender && (
-              <FormHelperText sx={{ color: "red" }} id="gender">
-                {formik.errors.gender}
+          <TextField
+            sx={{ gridColumn: "span 2" }}
+            id="description"
+            label="Description"
+            multiline
+            type="text"
+            fullWidth
+            variant="filled"
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.description && formik.errors.description}
+            helperText={formik.touched.description && formik.errors.description}
+          />
+          <FormControl sx={{ gridColumn: "span 2" }}>
+            <FormLabel id="demo-row-radio-buttons-group-label">
+              Tailoring
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              value={formik.values.tailoring}
+              onChange={formik.handleChange}
+            >
+              <FormControlLabel
+                name="tailoring"
+                control={<Radio />}
+                label="Yes "
+                value="yes"
+                onChange={() => setTailorDetails(true)}
+              />
+              <FormControlLabel
+                value="no"
+                control={<Radio />}
+                label="No"
+                name="tailoring"
+                onChange={() => setTailorDetails(false)}
+              />
+            </RadioGroup>
+
+            {formik.errors.tailoring && formik.touched.tailoring && (
+              <FormHelperText sx={{ color: "red" }} id="tailoring">
+                {formik.errors.tailoring}
               </FormHelperText>
             )}
-          </Box>
-        )}
-        <FormControl>
-          <FormLabel
-            id="demo-row-radio-buttons-group-label"
-            sx={{ padding: "30px" }}
-          >
-            Payment Method
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-            value={formik.values.paymentMethod}
-            onChange={formik.handleChange}
-          >
-            <FormControlLabel
-              name="paymentMethod"
-              control={<Radio />}
-              label="Cash "
-              value="cash"
-            />
-            <FormControlLabel
-              value="card"
-              control={<Radio />}
-              label="Card"
-              name="paymentMethod"
-            />
-          </RadioGroup>
-          {formik.errors.paymentMethod && formik.touched.paymentMethod && (
-            <FormHelperText sx={{ color: "red" }} id="paymentMethod">
-              {formik.errors.paymentMethod}
-            </FormHelperText>
-          )}
-        </FormControl>
-        {isAddCard && (
-          <>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="creditCardNumber"
-              label="Credit Card Number"
-              type="text"
-              fullWidth
-              variant="standard"
-              name="creditCardNumber"
-              placeholder="Credit Card Number"
-              value={formik.values.creditCardNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.creditCardNumber &&
-                formik.errors.creditCardNumber
-              }
-              helperText={
-                formik.touched.creditCardNumber &&
-                formik.errors.creditCardNumber
-              }
-            />
-            <TextField
-              margin="dense"
-              id="creditCardExpiryDate"
-              label="Credit Card Expiry Date M/Y"
-              type="text"
-              fullWidth
-              variant="standard"
-              name="creditCardExpiryDate"
-              value={formik.values.creditCardExpiryDate}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.creditCardExpiryDate &&
-                formik.errors.creditCardExpiryDate
-              }
-              helperText={
-                formik.touched.creditCardExpiryDate &&
-                formik.errors.creditCardExpiryDate
-              }
-            />
-            <TextField
-              margin="dense"
-              id="creditCardCVV"
-              label="Credit Card CVV"
-              type="text"
-              fullWidth
-              variant="standard"
-              name="creditCardCVV"
-              value={formik.values.creditCardCVV}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.creditCardCVV && formik.errors.creditCardCVV
-              }
-              helperText={
-                formik.touched.creditCardCVV && formik.errors.creditCardCVV
-              }
-            />
-            <FormControl className="creditCardType">
-              <InputLabel>Credit Card Type</InputLabel>
-              <Select
-                style={{ width: "16rem", height: "3rem" }}
-                name="creditCardType"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.creditCardType}
-                input={<OutlinedInput label="creditCardType" />}
-              >
-                {creditCardType.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-              {formik.errors.creditCardType &&
-                formik.touched.creditCardType && (
-                  <FormHelperText sx={{ color: "red" }} id="creditCardType">
-                    {formik.errors.creditCardType}
+          </FormControl>
+          {tailoringDetails && (
+            <>
+              <FormControl sx={{ gridColumn: "span 2" }}>
+                <InputLabel>Tailor Name</InputLabel>
+                <Select
+                  name="tailorId"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.tailorId}
+                  input={<OutlinedInput label="Tailor Name" />}
+                >
+                  {tailors.map((item) => (
+                    <MenuItem key={item._id} value={item._id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.errors.tailorId && formik.touched.tailorId && (
+                  <FormHelperText sx={{ color: "red" }} id="tailorId">
+                    {formik.errors.tailorId}
                   </FormHelperText>
                 )}
-            </FormControl>
-          </>
-        )}
+              </FormControl>
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                id="tailoringDescription"
+                label="Tailoring Description"
+                multiline
+                type="text"
+                fullWidth
+                variant="filled"
+                name="tailoringDescription"
+                value={formik.values.tailoringDescription}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.tailoringDescription &&
+                  formik.errors.tailoringDescription
+                }
+                helperText={
+                  formik.touched.tailoringDescription &&
+                  formik.errors.tailoringDescription
+                }
+              />
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                id="price"
+                label="Price"
+                type="text"
+                fullWidth
+                variant="filled"
+                name="price"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.price && formik.errors.price}
+                helperText={formik.touched.price && formik.errors.price}
+              />
+            </>
+          )}
+          <TextField
+            sx={{ gridColumn: "span 2" }}
+            id="phone"
+            label="Phone"
+            type="text"
+            fullWidth
+            variant="filled"
+            name="phone"
+            value={formik.values.phone}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phone && formik.errors.phone}
+            helperText={formik.touched.phone && formik.errors.phone}
+          />
+          {isClient && (
+            <>
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                autoFocus
+                id="text"
+                label="Name"
+                multiline
+                type="text"
+                fullWidth
+                variant="filled"
+                name="phoneName"
+                value={formik.values.phoneName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.phoneName && formik.errors.phoneName}
+                helperText={formik.touched.phoneName && formik.errors.phoneName}
+              />
+
+              <FormControl sx={{ gridColumn: "span 2" }}>
+                <FormLabel id="demo-row-radio-buttons-group-label">
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group gender"
+                  value={formik.values.gender}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <FormControlLabel
+                    name="gender"
+                    control={<Radio />}
+                    label="Male "
+                    value="male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                    name="gender"
+                  />
+                </RadioGroup>
+                {formik.errors.gender && formik.touched.gender && (
+                  <FormHelperText sx={{ color: "red" }} id="gender">
+                    {formik.errors.gender}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </>
+          )}
+          <FormControl sx={{ gridColumn: "span 2" }}>
+            <FormLabel id="demo-row-radio-buttons-group-label">
+              Payment Method
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              value={formik.values.paymentMethod}
+              onChange={formik.handleChange}
+            >
+              <FormControlLabel
+                name="paymentMethod"
+                control={<Radio />}
+                label="Cash "
+                value="cash"
+                onChange={() => {
+                  setIsBuyCard(false);
+                  setIsAddCard(false);
+                }}
+              />
+              <FormControlLabel
+                value="card"
+                control={<Radio />}
+                label="Card"
+                name="paymentMethod"
+                onChange={() => setIsBuyCard(true)}
+              />
+            </RadioGroup>
+            {formik.errors.paymentMethod && formik.touched.paymentMethod && (
+              <FormHelperText sx={{ color: "red" }} id="paymentMethod">
+                {formik.errors.paymentMethod}
+              </FormHelperText>
+            )}
+          </FormControl>
+          {isBuyCard && isAddCard && (
+            <>
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                autoFocus
+                id="creditCardNumber"
+                label="Credit Card Number"
+                type="text"
+                fullWidth
+                variant="filled"
+                name="creditCardNumber"
+                placeholder="Credit Card Number"
+                value={formik.values.creditCardNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.creditCardNumber &&
+                  formik.errors.creditCardNumber
+                }
+                helperText={
+                  formik.touched.creditCardNumber &&
+                  formik.errors.creditCardNumber
+                }
+              />
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                id="creditCardExpiryDate"
+                label="Credit Card Expiry Date M/Y"
+                type="text"
+                fullWidth
+                variant="filled"
+                name="creditCardExpiryDate"
+                value={formik.values.creditCardExpiryDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.errors.creditCardExpiryDate}
+                helperText={formik.errors.creditCardExpiryDate}
+              />
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                id="creditCardCVV"
+                label="Credit Card CVV"
+                type="text"
+                fullWidth
+                variant="filled"
+                name="creditCardCVV"
+                value={formik.values.creditCardCVV}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.errors.creditCardCVV}
+                helperText={formik.errors.creditCardCVV}
+              />
+              <FormControl sx={{ gridColumn: "span 2" }}>
+                <InputLabel>Credit Card Type</InputLabel>
+                <Select
+                  name="creditCardType"
+                  id="creditCardType"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.creditCardType}
+                  input={<OutlinedInput label="creditCardType" />}
+                >
+                  {creditCardType.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.errors.creditCardType &&
+                  formik.touched.creditCardType && (
+                    <FormHelperText sx={{ color: "red" }} id="creditCardType">
+                      {formik.errors.creditCardType}
+                    </FormHelperText>
+                  )}
+              </FormControl>
+            </>
+          )}
+        </Box>
 
         <div style={{ textAlign: "end" }}>
-          <Button type="submit" sx={{ fontSize: "20px" }}>
-            {loading ? <CircularProgress size="1.4rem" /> : <Box>Buy</Box>}{" "}
+          <Button type="submit" color="secondary" variant="contained">
+            {loading ? (
+              <CircularProgress
+                size="1.6rem"
+                sx={{
+                  mx: 1,
+                }}
+              />
+            ) : (
+              <div>Buy</div>
+            )}
           </Button>
         </div>
       </form>

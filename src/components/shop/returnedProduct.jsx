@@ -35,12 +35,29 @@ export default function BuyProductQR() {
           {data ? (
             data.map((el) => (
               <div className="box" key={el._id} style={{ height: "205px" }}>
-                <div className="text">Time: {el.updatedAt}</div>
-                <div className="text">Client: {el.clientId.name}</div>
-                <div className="text">Client Id: {el.clientId._id}</div>
-                <div className="text">Product Id: {el._id}</div>
-                <div className="text">Payment Method: {el.paymentMethod}</div>
-                {/* <div className="text">Invoice Id: {el.invoiceId.invoiceId}</div> */}
+                <div>
+                  <span className="text">
+                    <h4>Time:</h4> {el?.updatedAt}
+                  </span>
+                  <div className="text">
+                    <h4>Client: </h4>
+                    {el?.clientId?.name}
+                  </div>
+                  <span className="text">
+                    <h4>Client Id: </h4> {el?.clientId?._id}
+                  </span>
+                  <div className="text">
+                    <h4>Product Id: </h4>
+                    {el?.productId?._id}
+                  </div>
+                  <div className="text">
+                    <h4>Product Name :</h4> {el?.productId?.name}
+                  </div>
+                  <div className="text">
+                    <h4>User Name :</h4> {el?.userId?.name}
+                  </div>
+                  {/* <div className="text">Invoice Id: {el.invoiceId.invoiceId}</div> */}
+                </div>
               </div>
             ))
           ) : (

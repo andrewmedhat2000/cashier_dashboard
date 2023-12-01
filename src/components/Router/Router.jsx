@@ -16,6 +16,8 @@ import BuyProductQR from "../shop/BuyProductQR";
 import ReturnedProduct from "../shop/returnedProduct";
 import Profile from "../shop/profile";
 import TailorHome from "../shop/tailorHome";
+import Buy from "../shop/buyProductt";
+import BuyForMe from "../shop/buyForMe";
 const Rout = ({
   shop,
   Filter,
@@ -52,6 +54,32 @@ const Rout = ({
                 searchproduct={searchproduct}
               />
               <Home addtocart={addtocart} />
+            </>
+          }
+        />
+        <Route
+          path="/buy"
+          element={
+            <>
+              <Nav
+                search={search}
+                setSearch={setSearch}
+                searchproduct={searchproduct}
+              />
+              <Buy />
+            </>
+          }
+        />
+        <Route
+          path="/buyForMe"
+          element={
+            <>
+              <Nav
+                search={search}
+                setSearch={setSearch}
+                searchproduct={searchproduct}
+              />
+              <BuyForMe />
             </>
           }
         />

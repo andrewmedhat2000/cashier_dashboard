@@ -290,7 +290,7 @@
   width: 270px;
   height: 250px;
   overflow: hidden;
-  border: 3px solid #f6f6f6;
+  border: 3px solid #e3dfdf;
   margin-left: 15px;
   margin-top: 20px;
 }
@@ -299,6 +299,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-top: 11px;
+  display: flex;
 }
 .invoce-card .box button {
   margin-top: 10%;

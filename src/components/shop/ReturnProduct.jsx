@@ -24,12 +24,12 @@ export default function ReturnProduct() {
       axiosInstance
         .post("/user/returnproduct", values)
         .then((res) => {
+          toast.success(res.data.message);
           setLoading(false);
 
           console.log(res);
           console.log(res.data.message);
 
-          toast.success(res.data.message);
           formik.resetForm();
           formikPhone.handleSubmit();
         })
@@ -59,7 +59,7 @@ export default function ReturnProduct() {
           console.log(res);
           setInvoces(res.data.invoices);
 
-          toast.success(res.data.message);
+          !formik.values.invoiceId && toast.success(res.data.message);
         })
         .catch((e) => {
           setPhoneLoading(false);
@@ -137,12 +137,28 @@ export default function ReturnProduct() {
         <div className="invoce-card">
           {invoces.map((el) => (
             <div className="box" key={el._id}>
-              <div className="text">Time: {el.updatedAt}</div>
-              <div className="text">Client: {el.client}</div>
-              <div className="text">Product Id: {el.productId}</div>
-              <div className="text">Items: {el.numberOfItems}</div>
-              <div className="text">Total Price: {el.totalPrice}</div>
-              <div className="text">Invoice Id: {el.invoiceId}</div>
+              <div className="text">
+                <h4>Time: </h4>
+                {el.updatedAt}
+              </div>
+              <div className="text">
+                <h4>Client: </h4>
+                {el?.client}
+              </div>
+              <div className="text">
+                <h4>Product Id:</h4> {el?.productId}
+              </div>
+              <div className="text">
+                <h4>Items: </h4>
+                {el?.numberOfItems}
+              </div>
+              <div className="text">
+                <h4>Total Price:</h4> {el?.totalPrice}
+              </div>
+              <div className="text">
+                <h4>Invoice Id: </h4>
+                {el?.invoiceId}
+              </div>
 
               <button onClick={() => setInvoice(el.invoiceId)}>retuen</button>
             </div>

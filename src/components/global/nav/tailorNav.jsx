@@ -32,7 +32,7 @@ const TailorNav = ({ search, setSearch, searchproduct }) => {
         </div> */}
         <div className="mid_header">
           <div className="logo">
-            <img src="image/logo.webp" alt="logo"></img>
+            <img src="../../image/logo.webp" alt="logo" />
           </div>
           <div className="nav-bottom">
             <NavLink to={`/TailorHome/${id}`} className="search_box">
