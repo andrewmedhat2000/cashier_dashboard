@@ -40,6 +40,7 @@ export default function BuyProductQR() {
   const [isBuyCard, setIsBuyCard] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [dialog, setDialog] = useState();
+  const [data, setData] = useState();
 
   const checkLogin = async () => {
     localStorage.removeItem("QrId");
@@ -62,9 +63,23 @@ export default function BuyProductQR() {
         console.log(e);
       });
   };
+  const getProduct = async () => {
+    await axiosInstance
+      .get(`/product/getproduct/${id}`)
+      .then((res) => {
+        console.log(res.data.product);
+        setData(res.data.product);
+        //toast.success(res.data.message);
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error(e.response.data.message);
+      });
+  };
   useEffect(() => {
     checkLogin();
     getAllTailors();
+    getProduct();
   }, []);
   const buyProduct = (values) => {
     setLoading(true);
@@ -225,6 +240,40 @@ export default function BuyProductQR() {
   };
   return (
     <Box sx={{ mx: "50px", my: "30px" }}>
+      <div className="qr-product">
+        <div
+          style={{
+            fontSize: "25px",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
+          Product
+        </div>
+        <div className="data" style={{ columnCount: 3 }}>
+          <img src={data?.image.path} alt="img"></img>
+          <div className="text">
+            <h4>Name:</h4>
+            {data?.name}
+          </div>
+          <div className="text">
+            <h4>Size:</h4>
+            {data?.size}
+          </div>
+          <div className="text">
+            <h4>Color:</h4>
+            {data?.color}
+          </div>
+          <div className="text">
+            <h4>Stock:</h4>
+            {data?.stock}
+          </div>
+          <div className="text">
+            <h4>Price:</h4>
+            {data?.price}
+          </div>
+        </div>
+      </div>
       <div
         style={{
           fontSize: "25px",

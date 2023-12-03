@@ -37,7 +37,7 @@ export default function BuyProductQR() {
         <div className="invoce-card" style={{ marginBottom: "1.5rem" }}>
           {data ? (
             data.map((el) => (
-              <div className="box" key={el._id} style={{ height: "265px" }}>
+              <div className="box" key={el?._id} style={{ height: "265px" }}>
                 <div>
                   <span className="text">
                     <h4>Time:</h4>{" "}
@@ -57,7 +57,6 @@ export default function BuyProductQR() {
                     <h4>Product Id: </h4>
                     {el?.productId?._id}
                   </div>
-
                   <div className="text">
                     <h4>User Name :</h4> {el?.userId?.name}
                   </div>
@@ -65,8 +64,8 @@ export default function BuyProductQR() {
                     <h4>User Id :</h4> {el?.userId?._id}
                   </div>
                   <div className="text">
-                    <h4>Invoice Id :</h4> {el?.invoiceId}
-                  </div>
+                    <h4>Invoice Id :</h4> {el?.invoiceId?.invoiceId}
+                  </div>{" "}
                   {/* <div className="text">Invoice Id: {el.invoiceId.invoiceId}</div> */}
                 </div>
               </div>

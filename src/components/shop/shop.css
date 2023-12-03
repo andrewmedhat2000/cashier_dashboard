@@ -332,3 +332,24 @@
 .Dialog-invoice Button {
   cursor: pointer;
 }
+.qr-product {
+  border: 3px solid #e3dfdf;
+  padding: 5px 20px;
+  margin-bottom: 10px;
+}
+.qr-product .data {
+  padding: 30px 0px;
+  margin-left: 15%;
+}
+.qr-product .data .text {
+  margin-top: 15px;
+  display: flex;
+}
+.qr-product .data .text h4 {
+  margin-right: 3px;
+}
+.qr-product .data img {
+  object-fit: cover;
+  height: 120px;
+  width: 100px;
+}

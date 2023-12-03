@@ -57,8 +57,8 @@ export default function ReturnProduct() {
           setPhoneLoading(false);
 
           console.log(res);
+          console.log(res.data.invoices.reverse());
           setInvoces(res.data.invoices.reverse());
-
           !formik.values.invoiceId && toast.success(res.data.message);
         })
         .catch((e) => {
