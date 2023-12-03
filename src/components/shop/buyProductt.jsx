@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Dialog,
 } from "@mui/material";
 
 import { useFormik } from "formik";
@@ -29,6 +30,8 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
   const [isClient, setIsClient] = useState(false);
   const [isAddCard, setIsAddCard] = useState(false);
   const [isBuyCard, setIsBuyCard] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialog, setDialog] = useState();
 
   const [tailors, setTailor] = useState([]);
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -60,13 +63,15 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
     return axiosInstance
       .post(`/user/buy`, values)
       .then((response) => {
+        console.log(response.data.invoice);
         toast.success(response.data.message);
-        navigate("/home");
+        //navigate("/home");
         formik.resetForm();
-
+        setDialog(response.data.invoice);
         setIsClient(false);
         setIsAddCard(false);
         setLoading(false);
+        setShowDialog(true);
       })
       .catch((error) => {
         console.log(error);
@@ -75,8 +80,8 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
         if (error.response) {
           console.log(error.response);
           if (error.response.data.err.statusCode === 404) {
-            toast.warn(error.response.data.message);
-            setIsClient(true);
+            // toast.warn(error.response.data.message);
+            // setIsClient(true);
             //Navigate("/addClient");
           } else if (error.response.data.err.statusCode === 401) {
             toast.warn(error.response.data.message);
@@ -126,6 +131,8 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
+
     initialValues: {
       quantity: "",
       tailoring: "",
@@ -138,9 +145,9 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
       name: item?.name ? item?.name : "t-shirt",
       description: "",
       gender: "",
-      creditCardNumber: "",
-      creditCardExpiryDate: "",
-      creditCardCVV: "",
+      creditCardNumber: "1234567890123456",
+      creditCardExpiryDate: "12/26",
+      creditCardCVV: "555",
       creditCardType: "",
     },
 
@@ -156,8 +163,8 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
       tailorId: tailoringDetails ? yup.string().required("Required") : "",
 
       creditCardNumber: isAddCard && yup.string().required("Required").min(16),
-      gender: isClient ? yup.string().required("Required") : "",
-      phoneName: isClient ? yup.string().required("Required") : "",
+      gender: yup.string().required("Required"),
+      phoneName: yup.string().required("Required"),
 
       creditCardExpiryDate: isAddCard ? yup.string().required("Required") : "",
       creditCardCVV: isAddCard ? yup.string().required("Required") : "",
@@ -180,9 +187,9 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
         creditCardCVV: values.creditCardCVV,
         creditCardType: values.creditCardType,
       };
-      if (!isClient && !isAddCard) {
+      if (isClient && !isAddCard) {
         buyProduct(values);
-      } else if (isClient && !isAddCard) {
+      } else if (!isClient && !isAddCard) {
         addClient(valuesAddClient).then(() => {
           buyProduct(values);
         });
@@ -193,8 +200,25 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
       }
     },
   });
+  const getUser = async () => {
+    await axiosInstance
+      .get(`/user/getclient/${formik.values.phone}`)
+      .then((res) => {
+        setIsClient(true);
+
+        formik.values.phoneName = res.data?.client?.name;
+        formik.values.gender = res.data?.client?.gender;
+        console.log(res.data);
+      })
+      .catch((e) => {
+        setIsClient(false);
+
+        formik.values.phoneName = "";
+        formik.values.gender = "";
+      });
+  };
   useEffect(() => {
-    setIsClient(false);
+    getUser();
   }, [formik.values.phone]);
   return (
     <Box sx={{ mx: "50px", my: "30px" }}>
@@ -357,58 +381,57 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
             error={formik.touched.phone && formik.errors.phone}
             helperText={formik.touched.phone && formik.errors.phone}
           />
-          {isClient && (
-            <>
-              <TextField
-                sx={{ gridColumn: "span 2" }}
-                autoFocus
-                id="text"
-                label="Name"
-                multiline
-                type="text"
-                fullWidth
-                variant="filled"
-                name="phoneName"
-                value={formik.values.phoneName}
+
+          <>
+            <TextField
+              sx={{ gridColumn: "span 2" }}
+              id="text"
+              label="Name"
+              multiline
+              type="text"
+              fullWidth
+              variant="filled"
+              name="phoneName"
+              value={formik.values.phoneName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.phoneName && formik.errors.phoneName}
+              helperText={formik.touched.phoneName && formik.errors.phoneName}
+            />
+
+            <FormControl sx={{ gridColumn: "span 2" }}>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                Gender
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group gender"
+                value={formik.values.gender}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.phoneName && formik.errors.phoneName}
-                helperText={formik.touched.phoneName && formik.errors.phoneName}
-              />
+              >
+                <FormControlLabel
+                  name="gender"
+                  control={<Radio />}
+                  label="Male "
+                  value="male"
+                />
+                <FormControlLabel
+                  value="female"
+                  control={<Radio />}
+                  label="Female"
+                  name="gender"
+                />
+              </RadioGroup>
+              {formik.errors.gender && formik.touched.gender && (
+                <FormHelperText sx={{ color: "red" }} id="gender">
+                  {formik.errors.gender}
+                </FormHelperText>
+              )}
+            </FormControl>
+          </>
 
-              <FormControl sx={{ gridColumn: "span 2" }}>
-                <FormLabel id="demo-row-radio-buttons-group-label">
-                  Gender
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group gender"
-                  value={formik.values.gender}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <FormControlLabel
-                    name="gender"
-                    control={<Radio />}
-                    label="Male "
-                    value="male"
-                  />
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio />}
-                    label="Female"
-                    name="gender"
-                  />
-                </RadioGroup>
-                {formik.errors.gender && formik.touched.gender && (
-                  <FormHelperText sx={{ color: "red" }} id="gender">
-                    {formik.errors.gender}
-                  </FormHelperText>
-                )}
-              </FormControl>
-            </>
-          )}
           <FormControl sx={{ gridColumn: "span 2" }}>
             <FormLabel id="demo-row-radio-buttons-group-label">
               Payment Method
@@ -446,7 +469,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
           </FormControl>
           {isBuyCard && isAddCard && (
             <>
-              <TextField
+              {/* <TextField
                 sx={{ gridColumn: "span 2" }}
                 autoFocus
                 id="creditCardNumber"
@@ -495,7 +518,17 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
                 onBlur={formik.handleBlur}
                 error={formik.errors.creditCardCVV}
                 helperText={formik.errors.creditCardCVV}
-              />
+              /> */}
+              <TextField
+                sx={{ gridColumn: "span 2" }}
+                id=""
+                label="Reference Number"
+                type="text"
+                fullWidth
+                variant="filled"
+                name=""
+                onChange={formik.handleChange}
+              />{" "}
               <FormControl sx={{ gridColumn: "span 2" }}>
                 <InputLabel>Credit Card Type</InputLabel>
                 <Select
@@ -543,6 +576,47 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
           </Button>
         </div>
       </form>
+      <Dialog open={showDialog} className="Dialog-invoice">
+        <div style={{ padding: "20px" }}>
+          <h3 style={{ textAlign: "center" }}>Done</h3>
+          <span className="text">
+            <h4>Time:</h4> {dialog?.updatedAt.replace("T", " ").slice(0, -8)}
+          </span>
+
+          <span className="text">
+            <h4>Client Id: </h4> {dialog?.client}
+          </span>
+          <div className="text">
+            <h4>Product Id: </h4>
+            {dialog?.productId}
+          </div>
+          <div className="text">
+            <h4>Items :</h4> {dialog?.numberOfItems}
+          </div>
+          <div className="text">
+            <h4>Tailored :</h4>
+            {dialog?.tailored ? "true" : "false"}
+          </div>
+          <div className="text">
+            <h4>Invoice Id :</h4> {dialog?.invoiceId}
+          </div>
+          <div className="text">
+            <h4>Total Price :</h4> {dialog?.totalPrice}
+          </div>
+          {/* <div className="text">Invoice Id: {el.invoiceId.invoiceId}</div> */}
+        </div>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          onClick={() => {
+            toast.info("Printing");
+            navigate("/home");
+          }}
+        >
+          Print
+        </Button>
+      </Dialog>
     </Box>
   );
 }

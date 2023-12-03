@@ -288,7 +288,7 @@
 .invoce-card .box {
   padding: 10px 10px;
   width: 270px;
-  height: 250px;
+  height: 280px;
   overflow: hidden;
   border: 3px solid #e3dfdf;
   margin-left: 15px;
@@ -317,4 +317,18 @@
   height: 12rem;
   width: 12rem;
   margin-bottom: 1.5rem;
+}
+.Dialog-invoice .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 11px;
+  display: flex;
+}
+.Dialog-invoice .MuiPaper-root {
+  width: 40%;
+  height: 46.5%;
+}
+.Dialog-invoice Button {
+  cursor: pointer;
 }

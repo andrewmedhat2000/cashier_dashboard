@@ -2,7 +2,7 @@ import { axiosInstance } from "../config/axios";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import moment from "moment";
 export default function BuyProductQR() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,12 +15,15 @@ export default function BuyProductQR() {
         setData(response.data.retrieved);
 
         console.log(response.data.retrieved);
+        console.log(
+          response.data.retrieved[0].updatedAt.replace("T", " ").slice(0, -8)
+        );
       })
       .catch((e) => {
         setLoading(false);
 
         console.log(e);
-        toast.error(e.response.data.message);
+        toast.error(e.response?.data?.message);
       });
   };
   useEffect(() => {
@@ -34,10 +37,11 @@ export default function BuyProductQR() {
         <div className="invoce-card" style={{ marginBottom: "1.5rem" }}>
           {data ? (
             data.map((el) => (
-              <div className="box" key={el._id} style={{ height: "205px" }}>
+              <div className="box" key={el._id} style={{ height: "265px" }}>
                 <div>
                   <span className="text">
-                    <h4>Time:</h4> {el?.updatedAt}
+                    <h4>Time:</h4>{" "}
+                    {el?.updatedAt.replace("T", " ").slice(0, -8)}
                   </span>
                   <div className="text">
                     <h4>Client: </h4>
@@ -47,14 +51,21 @@ export default function BuyProductQR() {
                     <h4>Client Id: </h4> {el?.clientId?._id}
                   </span>
                   <div className="text">
-                    <h4>Product Id: </h4>
-                    {el?.productId?._id}
-                  </div>
-                  <div className="text">
                     <h4>Product Name :</h4> {el?.productId?.name}
                   </div>
                   <div className="text">
+                    <h4>Product Id: </h4>
+                    {el?.productId?._id}
+                  </div>
+
+                  <div className="text">
                     <h4>User Name :</h4> {el?.userId?.name}
+                  </div>
+                  <div className="text">
+                    <h4>User Id :</h4> {el?.userId?._id}
+                  </div>
+                  <div className="text">
+                    <h4>Invoice Id :</h4> {el?.invoiceId}
                   </div>
                   {/* <div className="text">Invoice Id: {el.invoiceId.invoiceId}</div> */}
                 </div>

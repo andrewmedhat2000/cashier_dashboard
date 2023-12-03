@@ -13,6 +13,7 @@ import {
   Select,
   MenuItem,
   OutlinedInput,
+  Dialog,
 } from "@mui/material";
 
 import { useFormik } from "formik";
@@ -30,7 +31,8 @@ export default function BuyForMySelf() {
   const [tailoringDetails, setTailorDetails] = useState(false);
   const [tailors, setTailor] = useState([]);
   const navigate = useNavigate();
-
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialog, setDialog] = useState();
   const location = useLocation();
 
   const item = location.state;
@@ -79,11 +81,14 @@ export default function BuyForMySelf() {
       return axiosInstance
         .post("/user/buyformyself", values)
         .then((res) => {
+          console.log(res);
           toast.success(res.data.message);
 
-          setLoading(false);
+          formik.resetForm();
+          setDialog(res.data.invoice);
 
-          navigate("/home");
+          setLoading(false);
+          setShowDialog(true);
         })
         .catch((e) => {
           console.log(e);
@@ -264,6 +269,47 @@ export default function BuyForMySelf() {
           </Button>
         </div>
       </form>
+      <Dialog open={showDialog} className="Dialog-invoice">
+        <div style={{ padding: "20px" }}>
+          <h3 style={{ textAlign: "center" }}>Done</h3>
+          <span className="text">
+            <h4>Time:</h4> {dialog?.updatedAt.replace("T", " ").slice(0, -8)}
+          </span>
+
+          <span className="text">
+            <h4>Client Id: </h4> {dialog?.client}
+          </span>
+          <div className="text">
+            <h4>Product Id: </h4>
+            {dialog?.productId}
+          </div>
+          <div className="text">
+            <h4>Items :</h4> {dialog?.numberOfItems}
+          </div>
+          <div className="text">
+            <h4>Tailored :</h4>
+            {dialog?.tailored ? "true" : "false"}
+          </div>
+          <div className="text">
+            <h4>Invoice Id :</h4> {dialog?.invoiceId}
+          </div>
+          <div className="text">
+            <h4>Total Price :</h4> {dialog?.totalPrice}
+          </div>
+          {/* <div className="text">Invoice Id: {el.invoiceId.invoiceId}</div> */}
+        </div>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          onClick={() => {
+            toast.info("Printing");
+            navigate("/home");
+          }}
+        >
+          Print
+        </Button>
+      </Dialog>
     </Box>
   );
 }

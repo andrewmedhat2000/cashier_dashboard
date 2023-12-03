@@ -139,7 +139,7 @@ export default function ReturnProduct() {
             <div className="box" key={el._id}>
               <div className="text">
                 <h4>Time: </h4>
-                {el.updatedAt}
+                {el.updatedAt.replace("T", " ").slice(0, -8)}
               </div>
               <div className="text">
                 <h4>Client: </h4>
@@ -151,6 +151,10 @@ export default function ReturnProduct() {
               <div className="text">
                 <h4>Items: </h4>
                 {el?.numberOfItems}
+              </div>
+              <div className="text">
+                <h4>Tailored: </h4>
+                {el?.tailored ? "true" : "false"}
               </div>
               <div className="text">
                 <h4>Total Price:</h4> {el?.totalPrice}
