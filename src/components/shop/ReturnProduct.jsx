@@ -52,12 +52,12 @@ export default function ReturnProduct() {
     onSubmit: (values) => {
       setPhoneLoading(true);
       axiosInstance
-        .post("/user/invoice", values)
+        .get(`/user/invoice/${values.phone}`)
         .then((res) => {
           setPhoneLoading(false);
 
           console.log(res);
-          setInvoces(res.data.invoices);
+          setInvoces(res.data.invoices.reverse());
 
           !formik.values.invoiceId && toast.success(res.data.message);
         })
