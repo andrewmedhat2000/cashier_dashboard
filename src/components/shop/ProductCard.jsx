@@ -45,9 +45,9 @@ export default function ProductCard(props, addtocart) {
       {showDetail ? (
         <>
           <div className="product_detail">
-            <button className="close_btn" onClick={closedetail}>
+{/*             <button className="close_btn" onClick={closedetail}>
               <AiOutlineClose />
-            </button>
+            </button> */}
             <div className="container">
               <div className="img_box">
                 <img src={detail.i.image.path} alt=""></img>
