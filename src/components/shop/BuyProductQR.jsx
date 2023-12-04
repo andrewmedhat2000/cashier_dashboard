@@ -615,7 +615,7 @@ export default function BuyProductQR() {
                 }}
               />
             ) : (
-              <div>Buy</div>
+              <div>Sale</div>
             )}
           </Button>
         </div>

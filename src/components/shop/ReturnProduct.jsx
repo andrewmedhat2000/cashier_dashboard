@@ -11,6 +11,7 @@ export default function ReturnProduct() {
   const [Phoneloading, setPhoneLoading] = useState(false);
   const [test, setTest] = useState(false);
   const [invoces, setInvoces] = useState([]);
+  const [client, setClient] = useState();
   const Navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -57,8 +58,9 @@ export default function ReturnProduct() {
           setPhoneLoading(false);
 
           console.log(res);
-          console.log(res.data.invoices.reverse());
-          setInvoces(res.data.invoices.reverse());
+          console.log(res.data);
+          setInvoces(res.data.invoices);
+          setClient(res.data.client);
           !formik.values.invoiceId && toast.success(res.data.message);
         })
         .catch((e) => {
@@ -142,8 +144,15 @@ export default function ReturnProduct() {
                 {el.updatedAt.replace("T", " ").slice(0, -8)}
               </div>
               <div className="text">
-                <h4>Client: </h4>
-                {el?.client}
+                <h4>Client Name: </h4>
+                {client?.name}
+              </div>
+              <div className="text">
+                <h4>Client phone: </h4>
+                {client?.phone}
+              </div>
+              <div className="text">
+                <h4>Client Id:</h4> {el?.client}
               </div>
               <div className="text">
                 <h4>Product Id:</h4> {el?.productId}
@@ -162,6 +171,10 @@ export default function ReturnProduct() {
               <div className="text">
                 <h4>Invoice Id: </h4>
                 {el?.invoiceId}
+              </div>
+              <div className="text">
+                <h4>User Id: </h4>
+                {el?.userId}
               </div>
 
               <button onClick={() => setInvoice(el.invoiceId)}>retuen</button>

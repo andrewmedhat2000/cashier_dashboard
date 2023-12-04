@@ -31,10 +31,10 @@ const TailorHome = () => {
         toast.error(e?.response?.data?.message);
       });
   };
-  const doneTailoring = (id) => {
+  const acceptTailoring = (id) => {
     console.log(id);
     return axiosInstance
-      .patch(`/user/tailoring/${id}`)
+      .patch(`/user/tailoring/accept/${id}`)
       .then((res) => {
         console.log(res.data);
         toast.success(res?.data?.message);
@@ -46,7 +46,21 @@ const TailorHome = () => {
         toast.error(e?.response?.data?.message);
       });
   };
+  const doneTailoring = (id) => {
+    console.log(id);
+    return axiosInstance
+      .patch(`/user/tailoring/complete/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        toast.success(res?.data?.message);
 
+        fetchData();
+      })
+      .catch((e) => {
+        console.log(e);
+        toast.error(e?.response?.data?.message);
+      });
+  };
   useEffect(() => {
     fetchData();
   }, []);
@@ -69,18 +83,30 @@ const TailorHome = () => {
                 <div className="text">Product: {el.productId?.name}</div>
                 <div className="text">Status: {el?.status}</div>
                 <div className="text">Price: {el?.price}</div>
-                {el?.status !== "accepted" ? (
+                {el?.status === "pending" ? (
                   <Button
+                    type="submit"
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => acceptTailoring(el?._id)}
+                  >
+                    Ok
+                  </Button>
+                ) : null}
+
+                {el?.status === "accepted" ? (
+                  <Button
+                    style={{ backgroundColor: "aqua" }}
                     type="submit"
                     color="secondary"
                     variant="contained"
                     onClick={() => doneTailoring(el?._id)}
                   >
-                    Ok
+                    Complete
                   </Button>
                 ) : (
                   <h4 style={{ textAlign: "center", marginTop: "30px" }}>
-                    Done
+                    Finshed
                   </h4>
                 )}
               </div>

@@ -89,9 +89,9 @@ export default function ProductCard(props, addtocart) {
           <p>{props.i?.price} KWD</p>
           {props.i?.stock > 0 ? (
             <div>
-              <button onClick={() => handleOpen(props.i)}>Buy</button>
+              <button onClick={() => handleOpen(props.i)}>Sale</button>
               <button onClick={() => navigate("/buyForMe", { state: props.i })}>
-                Buy For Me
+                Buy
               </button>
             </div>
           ) : (

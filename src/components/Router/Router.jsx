@@ -18,6 +18,8 @@ import Profile from "../shop/profile";
 import TailorHome from "../shop/tailorHome";
 import Buy from "../shop/buyProductt";
 import BuyForMe from "../shop/buyForMe";
+import Notification from "../shop/Notification";
+
 const Rout = ({
   shop,
   Filter,
@@ -119,6 +121,19 @@ const Rout = ({
                 searchproduct={searchproduct}
               />
               <ReturnedProduct />
+            </>
+          }
+        />
+        <Route
+          path="Notification"
+          element={
+            <>
+              <Nav
+                search={search}
+                setSearch={setSearch}
+                searchproduct={searchproduct}
+              />
+              <Notification />
             </>
           }
         />

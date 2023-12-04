@@ -47,6 +47,9 @@ const Nav = ({ search, setSearch, searchproduct }) => {
             <NavLink to="/ReturnedProduct" className="search_box">
               Returned Product
             </NavLink>
+            <NavLink to="/Notification" className="search_box">
+              Notification
+            </NavLink>
             <NavLink to="/Profile" className="search_box">
               Profile
             </NavLink>
