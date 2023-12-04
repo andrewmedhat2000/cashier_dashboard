@@ -85,7 +85,15 @@ export default function ProductCard(props, addtocart) {
           />
         </div>
         <div className="detail">
-          <h3>{props.i?.name}</h3>
+          <h3
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {props.i?.name}
+          </h3>
           <p>{props.i?.price} KWD</p>
           {props.i?.stock > 0 ? (
             <div>
