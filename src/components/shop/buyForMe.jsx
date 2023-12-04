@@ -264,7 +264,7 @@ export default function BuyForMySelf() {
                 }}
               />
             ) : (
-              <div>Sale</div>
+              <div>Sell</div>
             )}
           </Button>
         </div>

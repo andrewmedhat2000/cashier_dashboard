@@ -6,6 +6,7 @@ export default function BuyProductQR() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const fetchData = async () => {
+    setLoading(true);
     await axiosInstance
       .get("/Notification/all/tailoring")
       .then((response) => {

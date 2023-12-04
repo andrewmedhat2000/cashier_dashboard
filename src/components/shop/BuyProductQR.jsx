@@ -160,7 +160,7 @@ export default function BuyProductQR() {
       phoneName: "",
       price: "",
       paymentMethod: "",
-      name: "Buy",
+      name: data?.name ? data?.name : "",
       description: "",
       gender: "",
       creditCardNumber: "1234567890123456",
@@ -615,7 +615,7 @@ export default function BuyProductQR() {
                 }}
               />
             ) : (
-              <div>Sale</div>
+              <div>Sell</div>
             )}
           </Button>
         </div>

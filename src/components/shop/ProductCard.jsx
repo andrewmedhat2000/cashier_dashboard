@@ -37,8 +37,8 @@ export default function ProductCard(props, addtocart) {
     setDetail(productdetail);
     setShowDetail(true);
   };
-  const closedetail = () => {
-    setShowDetail(false);
+  const handel = () => {
+    setShowDetail(!false);
   };
   return (
     <>
@@ -89,9 +89,9 @@ export default function ProductCard(props, addtocart) {
           <p>{props.i?.price} KWD</p>
           {props.i?.stock > 0 ? (
             <div>
-              <button onClick={() => handleOpen(props.i)}>Sale</button>
-              <button onClick={() => navigate("/buyForMe", { state: props.i })}>
-                Buy
+              <button onClick={() => handleOpen(props.i)}>Sell</button>
+              <button onClick={() => setIsBuyForMySelf(true)}>
+                Manual Discount
               </button>
             </div>
           ) : (
@@ -99,7 +99,7 @@ export default function ProductCard(props, addtocart) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "10px",
+                marginTop: "30px",
               }}
             >
               Out Of Stock

@@ -571,7 +571,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
                 }}
               />
             ) : (
-              <div>Sale</div>
+              <div>Sell</div>
             )}
           </Button>
         </div>

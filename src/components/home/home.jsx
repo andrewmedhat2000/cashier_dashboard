@@ -19,7 +19,7 @@ import { axiosInstance } from "../config/axios";
 import { toast } from "react-toastify";
 
 const Home = ({ addtocart }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [categoriesList, setCategoryList] = useState(["All"]);
   const [category, setCategory] = useState("All");
 
