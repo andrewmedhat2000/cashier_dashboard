@@ -51,7 +51,6 @@ export default function BuyForMySelf({
         .post("https://andrew-demo.onrender.com/user/login", values)
         .then((res) => {
           toast.success(res.data.message);
-          localStorage.setItem("token", res.data.token);
           setLoading(false);
           navigate("/buyForMe", { state: props });
         })
