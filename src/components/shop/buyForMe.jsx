@@ -108,7 +108,7 @@ export default function BuyForMySelf() {
           textAlign: "center",
         }}
       >
-        Buy Product For My Self Now
+        Manual Discount
       </div>
       <form onSubmit={formik.handleSubmit}>
         <Box
