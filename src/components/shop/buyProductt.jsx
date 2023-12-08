@@ -39,7 +39,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
   const creditCardType = [
 {name:"Visa",value:"visa" },
 {name:"Master Card",value:"master card" }, 
-{name:"American Express",value:"american express" },
+{name:"American Express",value:"express" },
 {name:"Knet",value:"knet" },
 
 ];
