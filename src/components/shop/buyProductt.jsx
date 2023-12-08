@@ -561,6 +561,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
               </FormControl>
             </>
           )}
+          <div>{creditCardType[3].name.name}</div>
         </Box>
         <div style={{ marginTop: "10px", fontWeight: 600 }}>
           Total Price:{" "}
