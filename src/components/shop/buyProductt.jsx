@@ -238,6 +238,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
       >
         Buy Product Now
       </div>
+      <div>{creditCardType[3].name.name}</div>
 
       <form onSubmit={formik.handleSubmit}>
         <Box
@@ -561,7 +562,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
               </FormControl>
             </>
           )}
-          <div>{creditCardType[3].name.name}</div>
+          
         </Box>
         <div style={{ marginTop: "10px", fontWeight: 600 }}>
           Total Price:{" "}
