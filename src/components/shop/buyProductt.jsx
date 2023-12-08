@@ -238,7 +238,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
       >
         Buy Product Now
       </div>
-      <div>{creditCardType[3].name.name}</div>
+      
 
       <form onSubmit={formik.handleSubmit}>
         <Box
