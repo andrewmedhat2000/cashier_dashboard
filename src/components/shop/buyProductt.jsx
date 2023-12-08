@@ -36,7 +36,14 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
   const [tailors, setTailor] = useState([]);
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const creditCardType = ["visa", "master card", "american", "express", "knet"];
+  const creditCardType = [
+{name:"Visa",value:"visa" },
+{name:"Master Card",value:"master card" }, 
+{name:"American Express",value:"express" },
+{name:"Knet",value:"knet" },
+
+];
+
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -540,8 +547,8 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
                   input={<OutlinedInput label="creditCardType" />}
                 >
                   {creditCardType.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      {name}
+                    <MenuItem key={name.name} value={name.value}>
+                      {name.name}
                     </MenuItem>
                   ))}
                 </Select>
