@@ -264,7 +264,7 @@ export default function BuyProduct({ isFormOpened, handleCloseDialog, props }) {
               error={formik.touched.quantity && formik.errors.quantity}
               helperText={formik.touched.quantity && formik.errors.quantity}
             />
-            <div style={{ marginTop: "5px" }}>In stock {item?.stock}</div>
+            <div style={{ marginTop: "5px" }}>In Stock {item?.stock}</div>
           </Box>
 
           <TextField
